@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Shield, Lock, Server, Cloud, Cpu, ArrowRight, Eye, EyeOff, Database, Activity, Wifi, Globe, CheckCircle2, AlertTriangle, Layers, KeyRound, Gauge, RotateCcw } from 'lucide-react'
+import { Shield, Lock, Server, Cloud, Cpu, ArrowRight, Eye, EyeOff, Database, Activity, Wifi, Globe, CheckCircle2, AlertTriangle, Layers, KeyRound, Gauge, RotateCcw, UserCheck, Construction } from 'lucide-react'
 
 const architectureLayers = [
   {
@@ -52,7 +52,9 @@ const architectureLayers = [
     color: 'text-sp-accent',
     bg: 'bg-sp-accent-soft',
     borderColor: 'border-sp-accent/30',
+    planned: true,
     components: [
+      { name: 'Customer Authentication', icon: UserCheck, description: 'SSO login required before any proxy access', detail: 'Paessler account with active license — SSO planned for late 2026' },
       { name: 'LLM Proxy', icon: Shield, description: 'Routes anonymized queries to LLM providers', detail: 'Centralized key management — no BYOK needed' },
       { name: 'Rate Limiting', icon: Gauge, description: 'Per-customer throttling and fair usage', detail: 'Prevents abuse and controls costs' },
       { name: 'Cost Metering', icon: Layers, description: 'Usage tracking per customer / license tier', detail: 'Transparent token usage and billing' },
@@ -60,6 +62,8 @@ const architectureLayers = [
       { name: 'Key Management', icon: KeyRound, description: 'Paessler-managed API keys to LLM providers', detail: 'Customers never handle provider API keys' },
     ],
     securityNotes: [
+      'Requires authenticated Paessler account with valid license',
+      'SSO integration planned — federated identity via customer IdP',
       'No customer data stored — inference only',
       'Paessler manages all LLM provider API keys',
       'License enforcement ensures authorized access',
@@ -91,6 +95,7 @@ const architectureLayers = [
 const dataFlowSteps = [
   { from: 'PRTG Server', to: 'Sidekick', data: 'Sensor data, alerts, device tree', encryption: 'Local API (HTTPS)', stays: true },
   { from: 'Sidekick', to: 'Anonymization', data: 'Agent queries (coverage gaps, thresholds)', encryption: 'In-process', stays: true },
+  { from: 'Sidekick', to: 'Paessler Auth', data: 'Customer authenticates (SSO / Paessler account)', encryption: 'TLS 1.3 + OAuth 2.0', stays: false },
   { from: 'Anonymization', to: 'LLM Proxy', data: 'Anonymized structural patterns only', encryption: 'TLS 1.3', stays: false },
   { from: 'LLM Proxy', to: 'LLM Provider', data: 'Anonymized prompt + context', encryption: 'TLS 1.3', stays: false },
   { from: 'LLM Provider', to: 'LLM Proxy', data: 'AI analysis / recommendations', encryption: 'TLS 1.3', stays: false },
@@ -117,7 +122,7 @@ export default function DataFlowDiagram() {
       </div>
 
       {/* Key Principle Banner */}
-      <div className="bg-sp-up-bg border border-sp-up/20 rounded-[8px] p-4 mb-5">
+      <div className="bg-sp-up-bg border border-sp-up/20 rounded-[8px] p-4 mb-3">
         <div className="flex items-center gap-3">
           <Lock size={20} className="text-sp-up shrink-0" />
           <div>
@@ -125,6 +130,20 @@ export default function DataFlowDiagram() {
             <p className="text-[12px] text-sp-text-secondary mt-0.5">
               Only anonymized, structural patterns transit to LLM providers. Device names, IPs, and credentials are stripped before any data leaves your network.
               Paessler manages all LLM provider keys — no Bring Your Own Key.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Planned Infrastructure Notice */}
+      <div className="bg-sp-warning-bg border border-sp-warning/20 rounded-[8px] p-4 mb-5">
+        <div className="flex items-center gap-3">
+          <Construction size={20} className="text-sp-warning shrink-0" />
+          <div>
+            <div className="text-[13px] font-medium text-sp-text-brand">Planned Architecture — Not Yet Built</div>
+            <p className="text-[12px] text-sp-text-secondary mt-0.5">
+              The Paessler cloud infrastructure (LLM proxy, anonymization, authentication) does not exist yet and needs to be built.
+              Customers must authenticate with a Paessler account to use any cloud AI services. SSO is planned for late 2026 — until then, Paessler account login will be required.
             </p>
           </div>
         </div>
@@ -166,8 +185,16 @@ export default function DataFlowDiagram() {
                   <div className={`w-10 h-10 rounded-[8px] ${layer.bg} border ${layer.borderColor} flex items-center justify-center`}>
                     <LayerIcon size={20} className={layer.color} />
                   </div>
-                  <div>
-                    <h2 className="text-[16px] font-medium text-sp-text-brand">{layer.label}</h2>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2">
+                      <h2 className="text-[16px] font-medium text-sp-text-brand">{layer.label}</h2>
+                      {layer.planned && (
+                        <span className="text-[10px] px-1.5 py-0.5 rounded-[4px] bg-sp-warning-bg text-sp-warning font-bold border border-sp-warning/20 flex items-center gap-1">
+                          <Construction size={9} />
+                          PLANNED — NOT YET BUILT
+                        </span>
+                      )}
+                    </div>
                     <p className="text-[12px] text-sp-text-secondary">{layer.subtitle}</p>
                   </div>
                 </div>
@@ -300,6 +327,8 @@ export default function DataFlowDiagram() {
             <h2 className="text-[12px] font-bold text-sp-accent mb-2">Enterprise FAQ</h2>
             <div className="space-y-2">
               {[
+                { q: 'Do I need a Paessler account?', a: 'Yes. You must authenticate with Paessler to access the LLM proxy and cloud AI services. SSO via your corporate IdP is planned for late 2026.' },
+                { q: 'Does this infrastructure exist today?', a: 'No. The Paessler cloud infrastructure (proxy, auth, metering) is planned and needs to be built. This diagram shows the target architecture.' },
                 { q: 'Can I use my own API keys?', a: 'No — Paessler manages all provider keys through the proxy. This ensures cost control and security.' },
                 { q: 'Is my data used to train models?', a: 'No. All provider agreements prohibit training on customer data. Inference only.' },
                 { q: 'Can I keep data in the EU?', a: 'Yes. Azure OpenAI Frankfurt region is available. Select EU in Settings → LLM Provider.' },
