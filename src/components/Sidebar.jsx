@@ -27,13 +27,6 @@ export default function Sidebar({ activeModule, onModuleChange, theme, onThemeTo
             <div className="text-[14px] font-medium text-sp-text-brand tracking-tight">PRTG Sidekick</div>
             <div className="text-[10px] text-sp-text-tertiary tracking-[0.06em] uppercase">NEO Platform</div>
           </div>
-          <button
-            onClick={onThemeToggle}
-            className="w-7 h-7 rounded-[4px] flex items-center justify-center text-sp-text-tertiary hover:bg-sp-bg-surface-hover hover:text-sp-text-base transition-colors duration-200 cursor-pointer"
-            title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
-          >
-            {theme === 'dark' ? <Sun size={14} /> : <Moon size={14} />}
-          </button>
         </div>
       </div>
 
@@ -84,6 +77,21 @@ export default function Sidebar({ activeModule, onModuleChange, theme, onThemeTo
 
       {/* Footer */}
       <div className="px-4 py-3 border-t border-sp-border-subtle space-y-3">
+        {/* Theme toggle */}
+        <button
+          onClick={onThemeToggle}
+          className="w-full flex items-center gap-2.5 px-3 py-2 rounded-[6px] text-[13px] font-medium text-sp-text-secondary hover:bg-sp-bg-surface-hover hover:text-sp-text-base transition-colors duration-200 cursor-pointer"
+        >
+          {theme === 'dark' ? <Sun size={14} /> : <Moon size={14} />}
+          <span className="flex-1 text-left">{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
+          <div className={`w-8 h-[18px] rounded-full relative transition-colors duration-200 ${
+            theme === 'dark' ? 'bg-sp-bg-surface-active' : 'bg-sp-accent'
+          }`}>
+            <div className={`w-3.5 h-3.5 rounded-full bg-white absolute top-[2px] transition-all duration-200 ${
+              theme === 'dark' ? 'left-[2px]' : 'left-[14px]'
+            }`} />
+          </div>
+        </button>
         <button
           onClick={onOpenSettings}
           className="w-full flex items-center gap-2.5 px-3 py-2 rounded-[6px] text-[13px] font-medium text-sp-text-secondary hover:bg-sp-bg-surface-hover hover:text-sp-text-base transition-colors duration-200 cursor-pointer"
