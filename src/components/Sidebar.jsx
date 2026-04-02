@@ -1,9 +1,9 @@
 import { Shield, Activity, AlertTriangle, MessageSquare, BarChart3, CheckCircle2, Clock, Lock, Settings, Sun, Moon } from 'lucide-react'
 
 const agentItems = [
-  { id: 'coverage', label: 'Coverage Agent', icon: Shield, tier: '1' },
-  { id: 'signal', label: 'Signal Agent', icon: Activity, tier: '1' },
-  { id: 'resolution', label: 'Resolution Agent', icon: AlertTriangle, tier: '2' },
+  { id: 'coverage', label: 'Coverage Agent', icon: Shield },
+  { id: 'signal', label: 'Signal Agent', icon: Activity },
+  { id: 'resolution', label: 'Resolution Agent', icon: AlertTriangle },
 ]
 
 const platformItems = [
@@ -42,7 +42,7 @@ export default function Sidebar({ activeModule, onModuleChange, theme, onThemeTo
         <div className="px-2 mb-3 text-[10px] font-bold text-sp-text-tertiary uppercase tracking-[0.06em]">
           Agent Modules
         </div>
-        {agentItems.map(({ id, label, icon: Icon, tier }) => {
+        {agentItems.map(({ id, label, icon: Icon }) => {
           const isActive = activeModule === id
           return (
             <button
@@ -56,11 +56,6 @@ export default function Sidebar({ activeModule, onModuleChange, theme, onThemeTo
             >
               <Icon size={16} />
               <span className="flex-1 text-left">{label}</span>
-              <span className={`text-[10px] px-1.5 py-0.5 rounded-[4px] font-bold ${
-                tier === '1' ? 'bg-sp-accent-soft text-sp-accent' : 'bg-sp-unknown-bg text-sp-accent-tertiary'
-              }`}>
-                T{tier}
-              </span>
             </button>
           )
         })}
