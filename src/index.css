@@ -1,0 +1,150 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+ * Paessler Spectrum Design System — Tailwind Theme Integration
+ * Light + Dark themes sourced from @paessler/spectrum@28.5.0
+ * ========================================================================== */
+
+@theme {
+  /* --- Theme-aware colors via CSS variables (set per data-theme) --- */
+  --color-sp-bg-deepest: var(--t-bg-deepest);
+  --color-sp-bg-base: var(--t-bg-base);
+  --color-sp-bg-raised: var(--t-bg-raised);
+  --color-sp-bg-surface: var(--t-bg-surface);
+  --color-sp-bg-surface-hover: var(--t-bg-surface-hover);
+  --color-sp-bg-surface-active: var(--t-bg-surface-active);
+  --color-sp-bg-body: var(--t-bg-body);
+  --color-sp-bg-component: var(--t-bg-component);
+
+  --color-sp-border-subtle: var(--t-border-subtle);
+  --color-sp-border-default: var(--t-border-default);
+  --color-sp-border-strong: var(--t-border-strong);
+
+  --color-sp-text-brand: var(--t-text-brand);
+  --color-sp-text-base: var(--t-text-base);
+  --color-sp-text-alt: var(--t-text-alt);
+  --color-sp-text-secondary: var(--t-text-secondary);
+  --color-sp-text-tertiary: var(--t-text-tertiary);
+  --color-sp-text-disabled: var(--t-text-disabled);
+
+  /* --- Status colors (theme-aware for text, static for backgrounds) --- */
+  --color-sp-up: var(--t-status-up);
+  --color-sp-up-bg: var(--t-status-up-bg);
+  --color-sp-down: var(--t-status-down);
+  --color-sp-down-bg: var(--t-status-down-bg);
+  --color-sp-warning: var(--t-status-warning);
+  --color-sp-warning-bg: var(--t-status-warning-bg);
+  --color-sp-paused: #6b7280;
+  --color-sp-paused-bg: rgba(107, 114, 128, 0.10);
+  --color-sp-unusual: var(--t-status-unusual);
+  --color-sp-unusual-bg: var(--t-status-unusual-bg);
+  --color-sp-unknown: #a855f7;
+  --color-sp-unknown-bg: rgba(168, 85, 247, 0.10);
+
+  /* --- Accent (same in both themes) --- */
+  --color-sp-accent: #0F67FF;
+  --color-sp-accent-hover: #065AEC;
+  --color-sp-accent-active: #024ED3;
+  --color-sp-accent-soft: var(--t-accent-soft);
+  --color-sp-accent-secondary: #06b6d4;
+  --color-sp-accent-tertiary: #8b5cf6;
+
+  /* --- Typography --- */
+  --font-sans: Roboto, "Segoe UI", Tahoma, Arial, Helvetica, Verdana, sans-serif;
+  --font-mono: inconsolata, "JetBrains Mono", monospace;
+}
+
+/* ==========================================================================
+ * DARK THEME (default)
+ * ========================================================================== */
+:root, [data-theme="dark"] {
+  --t-bg-deepest: #060911;
+  --t-bg-base: #0a0e17;
+  --t-bg-raised: #0f1520;
+  --t-bg-surface: #141b29;
+  --t-bg-surface-hover: #1a2235;
+  --t-bg-surface-active: #1f2940;
+  --t-bg-body: #1D202B;
+  --t-bg-component: #252937;
+
+  --t-border-subtle: #1c2536;
+  --t-border-default: #253044;
+  --t-border-strong: #344160;
+
+  --t-text-brand: #F9F9FA;
+  --t-text-base: #E5E6E9;
+  --t-text-alt: #BABCC2;
+  --t-text-secondary: #8a95a9;
+  --t-text-tertiary: #5c6a82;
+  --t-text-disabled: #3d4a5e;
+
+  --t-status-up: #22c55e;
+  --t-status-up-bg: rgba(34, 197, 94, 0.10);
+  --t-status-down: #ef4444;
+  --t-status-down-bg: rgba(239, 68, 68, 0.10);
+  --t-status-warning: #eab308;
+  --t-status-warning-bg: rgba(234, 179, 8, 0.10);
+  --t-status-unusual: #F07000;
+  --t-status-unusual-bg: rgba(240, 112, 0, 0.10);
+
+  --t-accent-soft: rgba(15, 103, 255, 0.10);
+}
+
+/* ==========================================================================
+ * LIGHT THEME — Spectrum official light tokens
+ * ========================================================================== */
+[data-theme="light"] {
+  --t-bg-deepest: #F1F1F3;
+  --t-bg-base: #F9F9FA;
+  --t-bg-raised: #FFFFFF;
+  --t-bg-surface: #F9F9FA;
+  --t-bg-surface-hover: #F1F1F3;
+  --t-bg-surface-active: #E5E6E9;
+  --t-bg-body: #F9F9FA;
+  --t-bg-component: #FFFFFF;
+
+  --t-border-subtle: #F1F1F3;
+  --t-border-default: #E5E6E9;
+  --t-border-strong: #DBDCDF;
+
+  --t-text-brand: #050F34;
+  --t-text-base: #31343F;
+  --t-text-alt: #686B76;
+  --t-text-secondary: #686B76;
+  --t-text-tertiary: #A4A6AF;
+  --t-text-disabled: #DBDCDF;
+
+  --t-status-up: #697000;
+  --t-status-up-bg: #FDFFEB;
+  --t-status-down: #E3063D;
+  --t-status-down-bg: #FFF6F8;
+  --t-status-warning: #A04B00;
+  --t-status-warning-bg: #FFF8F3;
+  --t-status-unusual: #DE6800;
+  --t-status-unusual-bg: #FFF8F3;
+
+  --t-accent-soft: #F5F9FF;
+}
+
+body {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  font-size: 14px;
+  line-height: 20px;
+  transition: background-color 200ms, color 200ms;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--t-bg-raised); }
+::-webkit-scrollbar-thumb { background: var(--t-border-default); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--t-border-strong); }
+
+.module-enter { animation: fadeSlideIn 200ms cubic-bezier(0.4, 0, 0.2, 1); }
+
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
