@@ -225,7 +225,7 @@ export default function CoverageAgent() {
           <div className="w-px h-10 bg-sp-border-subtle" />
           <div className="text-right">
             <div className="text-[24px] font-bold text-sp-up">{deployedCount}</div>
-            <div className="text-[10px] text-sp-text-tertiary uppercase tracking-[0.06em]">Deployed</div>
+            <div className="text-[10px] text-sp-text-tertiary uppercase tracking-[0.06em]">Sensor Added</div>
           </div>
         </div>
       </div>
@@ -283,7 +283,7 @@ export default function CoverageAgent() {
                 className="flex items-center gap-1.5 px-4 py-1.5 rounded-[4px] bg-sp-accent text-white text-[12px] font-bold tracking-[0.02em] hover:bg-sp-accent-hover active:bg-sp-accent-active transition-colors duration-200 cursor-pointer"
               >
                 <Plus size={13} />
-                Approve &amp; Deploy All
+                Add All Sensors
               </button>
             )}
           </div>
@@ -317,7 +317,7 @@ export default function CoverageAgent() {
                     {isDeployed ? (
                       <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-[4px] bg-sp-up-bg text-sp-up text-[12px] font-bold">
                         <Check size={13} />
-                        Deployed
+                        Sensor Added
                       </div>
                     ) : (
                       <button
@@ -329,7 +329,7 @@ export default function CoverageAgent() {
                             : 'bg-sp-bg-surface text-sp-text-secondary hover:bg-sp-accent hover:text-white active:bg-sp-accent-active'
                         }`}
                       >
-                        {isDeploying ? 'Deploying...' : <><Plus size={13} /> Deploy</>}
+                        {isDeploying ? 'Adding...' : <><Plus size={13} /> Add Sensor</>}
                       </button>
                     )}
                   </div>

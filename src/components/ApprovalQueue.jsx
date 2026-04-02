@@ -8,7 +8,7 @@ const pendingActions = [
     agentIcon: Shield,
     agentColor: 'text-sp-up',
     agentBg: 'bg-sp-up-bg',
-    action: 'Deploy Sensor',
+    action: 'Add Sensor',
     target: 'SNMP Custom — STP Topology Change Counter',
     device: 'sw-core-01',
     priority: 'Critical',
@@ -22,7 +22,7 @@ const pendingActions = [
     agentIcon: Shield,
     agentColor: 'text-sp-up',
     agentBg: 'bg-sp-up-bg',
-    action: 'Deploy Sensor',
+    action: 'Add Sensor',
     target: 'WMI Custom — SQL Replication Lag (sec)',
     device: 'db-prod-01',
     priority: 'High',
@@ -61,10 +61,10 @@ const pendingActions = [
 ]
 
 const auditHistory = [
-  { id: 'ACT-098', action: 'Deploy Sensor', target: 'Windows Event Log — Backup Events', device: 'db-prod-02', agent: 'Coverage', status: 'approved', by: 'jkowall', at: 'Today 14:22', duration: '1.2s' },
+  { id: 'ACT-098', action: 'Add Sensor', target: 'Windows Event Log — Backup Events', device: 'db-prod-02', agent: 'Coverage', status: 'approved', by: 'jkowall', at: 'Today 14:22', duration: '1.2s' },
   { id: 'ACT-097', action: 'Update Threshold', target: 'Ping — fw-edge-01', device: 'fw-edge-01', agent: 'Signal', status: 'approved', by: 'jkowall', at: 'Today 13:45', duration: '0.8s' },
   { id: 'ACT-096', action: 'Acknowledge Sensors', target: '4 sensors on db-prod-02', device: 'db-prod-02', agent: 'Resolution', status: 'approved', by: 'mturner', at: 'Today 12:10', duration: '0.4s' },
-  { id: 'ACT-095', action: 'Deploy Sensor', target: 'SNMP Traffic — Gi0/1', device: 'sw-core-01', agent: 'Coverage', status: 'rejected', by: 'jkowall', at: 'Yesterday 16:30', duration: '—', note: 'Port is being decommissioned next week' },
+  { id: 'ACT-095', action: 'Add Sensor', target: 'SNMP Traffic — Gi0/1', device: 'sw-core-01', agent: 'Coverage', status: 'rejected', by: 'jkowall', at: 'Yesterday 16:30', duration: '—', note: 'Port is being decommissioned next week' },
   { id: 'ACT-094', action: 'Update Threshold', target: 'CPU Load — app-prod-01', device: 'app-prod-01', agent: 'Signal', status: 'approved', by: 'jkowall', at: 'Yesterday 14:15', duration: '0.6s' },
   { id: 'ACT-093', action: 'Pause Sensor', target: 'WMI Process — handle leak check', device: 'app-prod-01', agent: 'Resolution', status: 'approved', by: 'mturner', at: 'Yesterday 11:00', duration: '0.3s' },
 ]
@@ -81,7 +81,7 @@ const statusStyles = {
 }
 
 const actionIcons = {
-  'Deploy Sensor': Plus,
+  'Add Sensor': Plus,
   'Update Thresholds': BellOff,
   'Update Threshold': BellOff,
   'Pause Backup Job': Pause,
