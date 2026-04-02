@@ -299,58 +299,21 @@ export default function CoverageAgent() {
                 key={sensor.id}
                 className={`bg-sp-bg-raised rounded-[8px] border p-4 transition-all duration-200 ${
                   isDeployed
-                    ? 'border-sp-up/30 bg-sp-up-bg'
+                    ? 'border-sp-up/30'
                     : 'border-sp-border-subtle hover:border-sp-border-strong'
                 }`}
               >
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex-1 min-w-0">
-                    {/* Tags row */}
-                    <div className="flex items-center gap-2 mb-1.5">
-                      <span className={`text-[10px] px-1.5 py-0.5 rounded-[4px] font-bold ${priorityStyles[sensor.priority]}`}>
-                        {sensor.priority}
-                      </span>
-                      <span className={`text-[10px] px-1.5 py-0.5 rounded-[4px] font-medium flex items-center gap-1 ${tag.style}`}>
-                        <TagIcon size={9} />
-                        {tag.label}
-                      </span>
-                      <span className="text-[12px] text-sp-text-secondary">{sensor.device}</span>
-                    </div>
-
-                    {/* Sensor name */}
-                    <div className="text-[14px] font-medium text-sp-text-brand">{sensor.sensor}</div>
-
-                    {/* NEO rationale */}
-                    <div className="mt-2 bg-sp-bg-surface rounded-[6px] p-2.5 border border-sp-border-subtle/50">
-                      <div className="text-[10px] font-bold text-sp-text-tertiary uppercase tracking-[0.06em] mb-1 flex items-center gap-1">
-                        <Brain size={9} />
-                        NEO Analysis
-                      </div>
-                      <p className="text-[12px] text-sp-text-alt leading-[17px]">
-                        {sensor.rationale}
-                      </p>
-                    </div>
-
-                    {/* Deep links */}
-                    <div className="flex flex-wrap gap-2 mt-2">
-                      {sensor.deepLinks.map((link, i) => {
-                        const DLIcon = link.icon
-                        return (
-                          <button
-                            key={i}
-                            className="flex items-center gap-1.5 px-2 py-1 rounded-[4px] text-[11px] text-sp-text-alt bg-sp-bg-surface border border-sp-border-subtle/50 hover:text-sp-accent hover:border-sp-accent/30 transition-all duration-200 cursor-pointer"
-                          >
-                            <DLIcon size={10} />
-                            {link.label}
-                            <ExternalLink size={8} className="opacity-40" />
-                          </button>
-                        )
-                      })}
-                    </div>
-                  </div>
-
-                  {/* Deploy action */}
-                  <div className="shrink-0 pt-1">
+                {/* Tags row + deploy action */}
+                <div className="flex items-center gap-2 mb-1.5">
+                  <span className={`text-[10px] px-1.5 py-0.5 rounded-[4px] font-bold ${priorityStyles[sensor.priority]}`}>
+                    {sensor.priority}
+                  </span>
+                  <span className={`text-[10px] px-1.5 py-0.5 rounded-[4px] font-medium flex items-center gap-1 ${tag.style}`}>
+                    <TagIcon size={9} />
+                    {tag.label}
+                  </span>
+                  <span className="text-[12px] text-sp-text-secondary">{sensor.device}</span>
+                  <div className="ml-auto shrink-0">
                     {isDeployed ? (
                       <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-[4px] bg-sp-up-bg text-sp-up text-[12px] font-bold">
                         <Check size={13} />
@@ -370,6 +333,37 @@ export default function CoverageAgent() {
                       </button>
                     )}
                   </div>
+                </div>
+
+                {/* Sensor name */}
+                <div className="text-[14px] font-medium text-sp-text-brand">{sensor.sensor}</div>
+
+                {/* NEO rationale */}
+                <div className="mt-2 bg-sp-bg-surface rounded-[6px] p-2.5 border border-sp-border-subtle/50">
+                  <div className="text-[10px] font-bold text-sp-text-tertiary uppercase tracking-[0.06em] mb-1 flex items-center gap-1">
+                    <Brain size={9} />
+                    NEO Analysis
+                  </div>
+                  <p className="text-[12px] text-sp-text-alt leading-[17px]">
+                    {sensor.rationale}
+                  </p>
+                </div>
+
+                {/* Deep links */}
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {sensor.deepLinks.map((link, i) => {
+                    const DLIcon = link.icon
+                    return (
+                      <button
+                        key={i}
+                        className="flex items-center gap-1.5 px-2 py-1 rounded-[4px] text-[11px] text-sp-text-alt bg-sp-bg-surface border border-sp-border-subtle/50 hover:text-sp-accent hover:border-sp-accent/30 transition-all duration-200 cursor-pointer"
+                      >
+                        <DLIcon size={10} />
+                        {link.label}
+                        <ExternalLink size={8} className="opacity-40" />
+                      </button>
+                    )
+                  })}
                 </div>
               </div>
             )
