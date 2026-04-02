@@ -98,8 +98,8 @@ export default function ChatPanel({ activeModule }) {
             </div>
             <div className={`max-w-[85%] px-3 py-2.5 rounded-[8px] text-[13px] leading-[20px] ${
               msg.role === 'assistant'
-                ? 'bg-sp-bg-surface text-sp-text-base rounded-tl-[2px]'
-                : 'bg-sp-accent-soft text-sp-text-base rounded-tr-[2px]'
+                ? 'text-sp-text-base rounded-tl-[2px]'
+                : 'chat-user-bubble text-white rounded-tr-[2px]'
             }`}>
               {msg.text}
             </div>
@@ -109,7 +109,7 @@ export default function ChatPanel({ activeModule }) {
 
       {/* Input */}
       <div className="p-3 border-t border-sp-border-subtle">
-        <div className="flex items-center gap-2 bg-sp-bg-surface rounded-[6px] px-3 py-2 border border-sp-border-subtle focus-within:border-sp-accent transition-colors duration-200">
+        <div className="flex items-center gap-2 bg-sp-bg-surface rounded-[6px] px-3 py-2 chat-input-border transition-colors duration-200">
           <input
             value={input}
             onChange={e => setInput(e.target.value)}
@@ -119,7 +119,7 @@ export default function ChatPanel({ activeModule }) {
           />
           <button
             onClick={handleSend}
-            className="w-7 h-7 rounded-[4px] bg-sp-accent flex items-center justify-center hover:bg-sp-accent-hover active:bg-sp-accent-active transition-colors duration-200 cursor-pointer"
+            className="w-7 h-7 rounded-[4px] chat-send-btn flex items-center justify-center hover:opacity-90 active:opacity-80 transition-opacity duration-200 cursor-pointer"
           >
             <Send size={13} className="text-white" />
           </button>
