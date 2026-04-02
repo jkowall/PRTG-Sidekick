@@ -4,6 +4,11 @@ import Sidebar from './components/Sidebar'
 import CoverageAgent from './components/CoverageAgent'
 import SignalAgent from './components/SignalAgent'
 import ResolutionAgent from './components/ResolutionAgent'
+import NLQueryAgent from './components/NLQueryAgent'
+import ImpactDashboard from './components/ImpactDashboard'
+import ApprovalQueue from './components/ApprovalQueue'
+import ResolutionTimeline from './components/ResolutionTimeline'
+import DataFlowDiagram from './components/DataFlowDiagram'
 import ChatPanel from './components/ChatPanel'
 import SettingsModal from './components/SettingsModal'
 
@@ -22,6 +27,11 @@ function App() {
     coverage: CoverageAgent,
     signal: SignalAgent,
     resolution: ResolutionAgent,
+    nlquery: NLQueryAgent,
+    impact: ImpactDashboard,
+    approvals: ApprovalQueue,
+    timeline: ResolutionTimeline,
+    dataflow: DataFlowDiagram,
   }
 
   const ActiveComponent = modules[activeModule]
