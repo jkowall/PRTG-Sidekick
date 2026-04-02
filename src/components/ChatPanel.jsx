@@ -38,9 +38,9 @@ const initialMessages = {
     { role: 'assistant', text: "This demonstrates a realistic scenario based on the INC-2024-0847 pattern — a storage I/O saturation event caused by an unthrottled backup. In production, NEO would populate this with your actual incident data and resolution timelines." },
   ],
   dataflow: [
-    { role: 'assistant', text: "The Data Flow diagram shows the planned architecture for how on-premises PRTG data will flow to cloud LLM providers. Important: this infrastructure doesn't exist yet — it needs to be built. You'll need to authenticate with your Paessler account before any cloud AI services are available." },
+    { role: 'assistant', text: "The Data Flow diagram shows the proposed architecture for how on-premises PRTG data would flow to cloud LLM providers. Important: this infrastructure doesn't exist yet — it needs to be built. You'd need to authenticate with your Paessler account before any cloud AI services are available." },
     { role: 'user', text: 'What about authentication?' },
-    { role: 'assistant', text: "Customers must authenticate with a Paessler account to access the LLM proxy. SSO integration with your corporate identity provider is planned for late 2026. Until then, Paessler account login will be required. No anonymous or unauthenticated access to cloud AI services." },
+    { role: 'assistant', text: "Customers would need to authenticate with a Paessler account to access the LLM proxy. SSO integration with your corporate identity provider is being added in the coming months. No anonymous or unauthenticated access to cloud AI services." },
     { role: 'user', text: 'What exactly gets sent to the LLM?' },
     { role: 'assistant', text: "Device names, IPs, and credentials are stripped before anything leaves your network. The LLM receives anonymized patterns like 'Device-A (core switch class) has 6 VLANs, no spanning tree monitoring' — never 'sw-core-01 at 10.0.1.1'. All API keys are managed by Paessler, not customers." },
   ],

@@ -52,9 +52,9 @@ const architectureLayers = [
     color: 'text-sp-accent',
     bg: 'bg-sp-accent-soft',
     borderColor: 'border-sp-accent/30',
-    planned: true,
+    proposed: true,
     components: [
-      { name: 'Customer Authentication', icon: UserCheck, description: 'SSO login required before any proxy access', detail: 'Paessler account with active license — SSO planned for late 2026' },
+      { name: 'Customer Authentication', icon: UserCheck, description: 'SSO login required before any proxy access', detail: 'Paessler account with active license — SSO being added in the coming months' },
       { name: 'LLM Proxy', icon: Shield, description: 'Routes anonymized queries to LLM providers', detail: 'Centralized key management — no BYOK needed' },
       { name: 'Rate Limiting', icon: Gauge, description: 'Per-customer throttling and fair usage', detail: 'Prevents abuse and controls costs' },
       { name: 'Cost Metering', icon: Layers, description: 'Usage tracking per customer / license tier', detail: 'Transparent token usage and billing' },
@@ -63,7 +63,7 @@ const architectureLayers = [
     ],
     securityNotes: [
       'Requires authenticated Paessler account with valid license',
-      'SSO integration planned — federated identity via customer IdP',
+      'SSO integration being added — federated identity via customer IdP',
       'No customer data stored — inference only',
       'Paessler manages all LLM provider API keys',
       'License enforcement ensures authorized access',
@@ -140,10 +140,10 @@ export default function DataFlowDiagram() {
         <div className="flex items-center gap-3">
           <Construction size={20} className="text-sp-warning shrink-0" />
           <div>
-            <div className="text-[13px] font-medium text-sp-text-brand">Planned Architecture — Not Yet Built</div>
+            <div className="text-[13px] font-medium text-sp-text-brand">Proposed Architecture — Not Yet Built</div>
             <p className="text-[12px] text-sp-text-secondary mt-0.5">
               The Paessler cloud infrastructure (LLM proxy, anonymization, authentication) does not exist yet and needs to be built.
-              Customers must authenticate with a Paessler account to use any cloud AI services. SSO is planned for late 2026 — until then, Paessler account login will be required.
+              Customers would need to authenticate with a Paessler account to use any cloud AI services. SSO is being added in the coming months.
             </p>
           </div>
         </div>
@@ -188,10 +188,10 @@ export default function DataFlowDiagram() {
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
                       <h2 className="text-[16px] font-medium text-sp-text-brand">{layer.label}</h2>
-                      {layer.planned && (
+                      {layer.proposed && (
                         <span className="text-[10px] px-1.5 py-0.5 rounded-[4px] bg-sp-warning-bg text-sp-warning font-bold border border-sp-warning/20 flex items-center gap-1">
                           <Construction size={9} />
-                          PLANNED — NOT YET BUILT
+                          PROPOSED
                         </span>
                       )}
                     </div>
@@ -327,8 +327,8 @@ export default function DataFlowDiagram() {
             <h2 className="text-[12px] font-bold text-sp-accent mb-2">Enterprise FAQ</h2>
             <div className="space-y-2">
               {[
-                { q: 'Do I need a Paessler account?', a: 'Yes. You must authenticate with Paessler to access the LLM proxy and cloud AI services. SSO via your corporate IdP is planned for late 2026.' },
-                { q: 'Does this infrastructure exist today?', a: 'No. The Paessler cloud infrastructure (proxy, auth, metering) is planned and needs to be built. This diagram shows the target architecture.' },
+                { q: 'Do I need a Paessler account?', a: 'Yes. You would need to authenticate with Paessler to access the LLM proxy and cloud AI services. SSO via your corporate IdP is being added in the coming months.' },
+                { q: 'Does this infrastructure exist today?', a: 'No. The Paessler cloud infrastructure (proxy, auth, metering) is proposed and needs to be built. This diagram shows the target architecture.' },
                 { q: 'Can I use my own API keys?', a: 'No — Paessler manages all provider keys through the proxy. This ensures cost control and security.' },
                 { q: 'Is my data used to train models?', a: 'No. All provider agreements prohibit training on customer data. Inference only.' },
                 { q: 'Can I keep data in the EU?', a: 'Yes. Azure OpenAI Frankfurt region is available. Select EU in Settings → LLM Provider.' },
