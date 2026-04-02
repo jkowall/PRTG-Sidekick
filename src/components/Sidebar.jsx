@@ -1,9 +1,17 @@
-import { Shield, Activity, AlertTriangle, Settings, Sun, Moon } from 'lucide-react'
+import { Shield, Activity, AlertTriangle, MessageSquare, BarChart3, CheckCircle2, Clock, Lock, Settings, Sun, Moon } from 'lucide-react'
 
-const navItems = [
+const agentItems = [
   { id: 'coverage', label: 'Coverage Agent', icon: Shield, tier: '1' },
   { id: 'signal', label: 'Signal Agent', icon: Activity, tier: '1' },
   { id: 'resolution', label: 'Resolution Agent', icon: AlertTriangle, tier: '2' },
+]
+
+const platformItems = [
+  { id: 'nlquery', label: 'NL Query', icon: MessageSquare },
+  { id: 'impact', label: 'Impact Dashboard', icon: BarChart3 },
+  { id: 'approvals', label: 'Approval Queue', icon: CheckCircle2 },
+  { id: 'timeline', label: 'Resolution Timeline', icon: Clock },
+  { id: 'dataflow', label: 'Data Flow', icon: Lock },
 ]
 
 export default function Sidebar({ activeModule, onModuleChange, theme, onThemeToggle, onOpenSettings }) {
@@ -30,11 +38,11 @@ export default function Sidebar({ activeModule, onModuleChange, theme, onThemeTo
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 px-3 py-4 space-y-1">
+      <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
         <div className="px-2 mb-3 text-[10px] font-bold text-sp-text-tertiary uppercase tracking-[0.06em]">
           Agent Modules
         </div>
-        {navItems.map(({ id, label, icon: Icon, tier }) => {
+        {agentItems.map(({ id, label, icon: Icon, tier }) => {
           const isActive = activeModule === id
           return (
             <button
@@ -53,6 +61,27 @@ export default function Sidebar({ activeModule, onModuleChange, theme, onThemeTo
               }`}>
                 T{tier}
               </span>
+            </button>
+          )
+        })}
+
+        <div className="px-2 mt-4 mb-3 text-[10px] font-bold text-sp-text-tertiary uppercase tracking-[0.06em]">
+          NEO Platform
+        </div>
+        {platformItems.map(({ id, label, icon: Icon }) => {
+          const isActive = activeModule === id
+          return (
+            <button
+              key={id}
+              onClick={() => onModuleChange(id)}
+              className={`w-full flex items-center gap-3 px-3 py-2 rounded-[6px] text-[13px] font-medium transition-all duration-200 cursor-pointer ${
+                isActive
+                  ? 'bg-sp-accent-soft text-sp-accent'
+                  : 'text-sp-text-secondary hover:bg-sp-bg-surface-hover hover:text-sp-text-base'
+              }`}
+            >
+              <Icon size={16} />
+              <span className="flex-1 text-left">{label}</span>
             </button>
           )
         })}

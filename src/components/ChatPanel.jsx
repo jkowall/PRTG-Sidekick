@@ -17,6 +17,31 @@ const initialMessages = {
     { role: 'user', text: 'What is the root cause?' },
     { role: 'assistant', text: "My analysis ranks storage I/O saturation as the most likely cause (87% confidence). The disk queue length spiked to 142 at 14:31, one minute before the cascade. This correlates with a scheduled backup job that wasn't throttled. I recommend pausing the backup job and acknowledging the sensors." },
   ],
+  nlquery: [
+    { role: 'assistant', text: "I can answer questions about your PRTG environment in plain English. Try asking about device status, performance trends, alert history, or sensor inventory across all connected instances." },
+    { role: 'user', text: 'How does the natural language query work?' },
+    { role: 'assistant', text: "I translate your questions into PRTG API calls, query all connected instances, correlate the data, and present structured results. For example, 'Which devices had the most downtime this month?' becomes API calls to pull sensor status history, aggregate downtime per device, and rank by total duration." },
+  ],
+  impact: [
+    { role: 'assistant', text: "Your NEO Impact Dashboard shows 61.5 hours saved this month — equivalent to 1.5 FTEs of capacity reclaimed. The biggest contributor is Signal Agent, which eliminated 89% of alert noise." },
+    { role: 'user', text: 'Can I export this for a board presentation?' },
+    { role: 'assistant', text: "The Executive Summary card at the bottom right is designed for exactly that. In production, you'll be able to export a one-page PDF with key metrics, trend charts, and the capacity shift visualization for stakeholder presentations." },
+  ],
+  approvals: [
+    { role: 'assistant', text: "You have 4 pending actions from NEO agents awaiting your approval. 2 are sensor deployments from Coverage Agent, 1 threshold update from Signal Agent, and 1 remediation action from Resolution Agent." },
+    { role: 'user', text: 'Why does NEO need my approval?' },
+    { role: 'assistant', text: "NEO follows a human-in-the-loop model — it analyzes and recommends, but you decide what to execute. This ensures you maintain control over your monitoring environment. Every action includes NEO's rationale so you can make an informed decision." },
+  ],
+  timeline: [
+    { role: 'assistant', text: "The Resolution Timeline shows how NEO compressed incident INC-2024-0847 from 1h 30m (manual) to 5 minutes. The biggest time savings come from instant root cause identification — what took 40 minutes manually, NEO does in 30 seconds." },
+    { role: 'user', text: 'Is this a real incident?' },
+    { role: 'assistant', text: "This demonstrates a realistic scenario based on the INC-2024-0847 pattern — a storage I/O saturation event caused by an unthrottled backup. In production, NEO would populate this with your actual incident data and resolution timelines." },
+  ],
+  dataflow: [
+    { role: 'assistant', text: "The Data Flow diagram shows how your on-premises PRTG data is handled. Key point: raw data never leaves your network. Only anonymized structural patterns transit to LLM providers through Paessler's managed proxy." },
+    { role: 'user', text: 'What exactly gets sent to the LLM?' },
+    { role: 'assistant', text: "Device names, IPs, and credentials are stripped before anything leaves your network. The LLM receives anonymized patterns like 'Device-A (core switch class) has 6 VLANs, no spanning tree monitoring' — never 'sw-core-01 at 10.0.1.1'. All API keys are managed by Paessler, not customers." },
+  ],
 }
 
 export default function ChatPanel({ activeModule }) {
