@@ -94,7 +94,10 @@ const CustomTooltip = ({ active, payload, label }) => {
   )
 }
 
+const periods = ['Last 2 Weeks', 'Last 4 Weeks', 'Last 6 Weeks', 'Last 3 Months', 'Year to Date']
+
 export default function ImpactDashboard() {
+  const [period, setPeriod] = useState('Last 6 Weeks')
   const chartColors = useChartColors()
 
   const totalHours = weeklyData.reduce((acc, w) => acc + w.hoursSaved, 0).toFixed(1)
@@ -112,9 +115,15 @@ export default function ImpactDashboard() {
             Measurable ROI from AI-driven monitoring — capacity reclaimed without hiring
           </p>
         </div>
-        <div className="flex items-center gap-2 px-3 py-1.5 rounded-[6px] bg-sp-bg-surface border border-sp-border-subtle">
+        <div className="flex items-center gap-2">
           <span className="text-[12px] text-sp-text-secondary">Period:</span>
-          <span className="text-[12px] font-medium text-sp-text-brand">Last 6 Weeks</span>
+          <select
+            value={period}
+            onChange={e => setPeriod(e.target.value)}
+            className="bg-sp-bg-surface border border-sp-border-subtle rounded-[6px] px-3 py-1.5 text-[12px] font-medium text-sp-text-brand outline-none focus:border-sp-accent transition-colors duration-200 cursor-pointer"
+          >
+            {periods.map(p => <option key={p} value={p}>{p}</option>)}
+          </select>
         </div>
       </div>
 

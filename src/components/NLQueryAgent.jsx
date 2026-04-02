@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { MessageSquare, Search, ArrowRight, Server, Activity, AlertTriangle, Clock, Database, Wifi, ChevronRight, Sparkles } from 'lucide-react'
+import { MessageSquare, Search, Server, Activity, AlertTriangle, Clock, ChevronRight, Sparkles } from 'lucide-react'
 
 const sampleQueries = [
   { text: 'Which devices have been down the most this month?', category: 'Status' },
@@ -254,33 +254,8 @@ export default function NLQueryAgent() {
           )}
         </div>
 
-        {/* Query History + Capabilities */}
+        {/* Query History */}
         <div className="col-span-2 space-y-4">
-          {/* Capabilities */}
-          <div className="bg-sp-bg-raised rounded-[12px] border border-sp-border-subtle p-4">
-            <h2 className="text-[14px] font-medium text-sp-text-brand mb-3">What You Can Ask</h2>
-            <div className="space-y-2.5">
-              {[
-                { icon: Server, label: 'Device Status', desc: 'Which devices are down, what changed, health summaries' },
-                { icon: Activity, label: 'Performance Data', desc: 'CPU, memory, bandwidth trends and comparisons' },
-                { icon: AlertTriangle, label: 'Alert Analysis', desc: 'Noisy sensors, alert history, threshold questions' },
-                { icon: Database, label: 'Inventory Queries', desc: 'Sensor counts, device lists, group structure' },
-                { icon: Wifi, label: 'Cross-Instance', desc: 'Compare across Production and DR site data' },
-                { icon: Clock, label: 'Historical', desc: 'Uptime reports, SLA calculations, trend analysis' },
-              ].map(({ icon: Icon, label, desc }, i) => (
-                <div key={i} className="flex items-start gap-2.5">
-                  <div className="w-6 h-6 rounded-[4px] bg-sp-accent-soft flex items-center justify-center shrink-0 mt-0.5">
-                    <Icon size={12} className="text-sp-accent" />
-                  </div>
-                  <div>
-                    <div className="text-[12px] font-medium text-sp-text-brand">{label}</div>
-                    <div className="text-[11px] text-sp-text-secondary leading-[15px]">{desc}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
           {/* Query History */}
           <div className="bg-sp-bg-raised rounded-[12px] border border-sp-border-subtle p-4">
             <h2 className="text-[14px] font-medium text-sp-text-brand mb-3">Recent Queries</h2>
