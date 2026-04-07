@@ -1,22 +1,48 @@
 import { Shield, Activity, AlertTriangle, MessageSquare, BarChart3, CheckCircle2, Clock, Lock, Settings, Sun, Moon } from 'lucide-react'
+import { useDemo } from '../demoContext'
 
 const agentItems = [
-  { id: 'coverage', label: 'Coverage Agent', icon: Shield },
-  { id: 'signal', label: 'Signal Agent', icon: Activity },
-  { id: 'resolution', label: 'Resolution Agent', icon: AlertTriangle },
+  { id: 'coverage', label: 'Coverage Agent' },
+  { id: 'signal', label: 'Signal Agent' },
+  { id: 'resolution', label: 'Resolution Agent' },
 ]
 
 const platformItems = [
-  { id: 'nlquery', label: 'NL Query', icon: MessageSquare },
-  { id: 'impact', label: 'Impact Dashboard', icon: BarChart3 },
-  { id: 'approvals', label: 'Approval Queue', icon: CheckCircle2 },
-  { id: 'timeline', label: 'Resolution Timeline', icon: Clock },
-  { id: 'dataflow', label: 'Data Flow', icon: Lock },
+  { id: 'nlquery', label: 'NL Query' },
+  { id: 'impact', label: 'Impact Dashboard' },
+  { id: 'approvals', label: 'Approval Queue' },
+  { id: 'timeline', label: 'Resolution Timeline' },
+  { id: 'dataflow', label: 'Data Flow' },
 ]
 
+function renderItemIcon(id, className = '') {
+  switch (id) {
+    case 'coverage':
+      return <Shield size={16} className={className} />
+    case 'signal':
+      return <Activity size={16} className={className} />
+    case 'resolution':
+      return <AlertTriangle size={16} className={className} />
+    case 'nlquery':
+      return <MessageSquare size={16} className={className} />
+    case 'impact':
+      return <BarChart3 size={16} className={className} />
+    case 'approvals':
+      return <CheckCircle2 size={16} className={className} />
+    case 'timeline':
+      return <Clock size={16} className={className} />
+    case 'dataflow':
+      return <Lock size={16} className={className} />
+    default:
+      return <Shield size={16} className={className} />
+  }
+}
+
 export default function Sidebar({ activeModule, onModuleChange, theme, onThemeToggle, onOpenSettings }) {
+  const { state, derived } = useDemo()
+
   return (
-    <aside className="w-[260px] bg-sp-bg-raised border-r border-sp-border-subtle flex flex-col shrink-0">
+    <aside className="hidden w-[260px] shrink-0 border-r border-sp-border-subtle bg-sp-bg-raised lg:flex lg:flex-col">
       {/* Logo */}
       <div className="px-4 py-4 border-b border-sp-border-subtle">
         <div className="flex items-center gap-3">
@@ -35,7 +61,7 @@ export default function Sidebar({ activeModule, onModuleChange, theme, onThemeTo
         <div className="px-2 mb-3 text-[10px] font-bold text-sp-text-tertiary uppercase tracking-[0.06em]">
           Agent Modules
         </div>
-        {agentItems.map(({ id, label, icon: Icon }) => {
+        {agentItems.map(({ id, label }) => {
           const isActive = activeModule === id
           return (
             <button
@@ -47,7 +73,7 @@ export default function Sidebar({ activeModule, onModuleChange, theme, onThemeTo
                   : 'text-sp-text-secondary hover:bg-sp-bg-surface-hover hover:text-sp-text-base'
               }`}
             >
-              <Icon size={16} />
+              {renderItemIcon(id)}
               <span className="flex-1 text-left">{label}</span>
             </button>
           )
@@ -56,7 +82,7 @@ export default function Sidebar({ activeModule, onModuleChange, theme, onThemeTo
         <div className="px-2 mt-4 mb-3 text-[10px] font-bold text-sp-text-tertiary uppercase tracking-[0.06em]">
           NEO Platform
         </div>
-        {platformItems.map(({ id, label, icon: Icon }) => {
+        {platformItems.map(({ id, label }) => {
           const isActive = activeModule === id
           return (
             <button
@@ -68,7 +94,7 @@ export default function Sidebar({ activeModule, onModuleChange, theme, onThemeTo
                   : 'text-sp-text-secondary hover:bg-sp-bg-surface-hover hover:text-sp-text-base'
               }`}
             >
-              <Icon size={16} />
+              {renderItemIcon(id)}
               <span className="flex-1 text-left">{label}</span>
             </button>
           )
@@ -103,7 +129,12 @@ export default function Sidebar({ activeModule, onModuleChange, theme, onThemeTo
           <div className="w-2 h-2 rounded-full bg-sp-up animate-pulse" />
           <span className="text-[12px] text-sp-text-secondary">NEO Engine Active</span>
         </div>
-        <div className="text-[10px] text-sp-text-tertiary px-3">2 servers connected</div>
+        <div className="px-3 text-[10px] text-sp-text-tertiary">
+          {state.servers.length} servers connected
+        </div>
+        <div className="px-3 text-[10px] text-sp-text-tertiary">
+          {derived.scale.sensors.toLocaleString()} sensors in {derived.scale.instances} instances
+        </div>
       </div>
     </aside>
   )
