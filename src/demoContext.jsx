@@ -26,6 +26,17 @@ import {
 
 const DemoContext = createContext(null)
 const STORAGE_KEY = 'prtg-sidekick-demo-state-v2'
+const storyModuleLabels = {
+  overview: 'Start Here',
+  coverage: 'Coverage Agent',
+  signal: 'Signal Agent',
+  resolution: 'Resolution Agent',
+  approvals: 'Approval Queue',
+  impact: 'Impact Dashboard',
+  dataflow: 'Data Flow',
+  nlquery: 'NL Query',
+  timeline: 'Resolution Timeline',
+}
 
 function clone(value) {
   return JSON.parse(JSON.stringify(value))
@@ -79,11 +90,13 @@ function buildChatSeeds(state, activeModule, scale) {
   const openCoverage = Object.values(state.coverageStatuses).filter((status) => status === 'open').length
   const pendingApprovals = state.approvalsPending.length
   const currentIncident = buildIncident(state)
+  const storyGuide = buildStoryGuide(state, scale)
 
   const base = {
     overview: [
       { role: 'assistant', text: 'NEO is the approval-driven AI operating layer behind the Sidekick demo.' },
-      { role: 'assistant', text: 'Use this page to frame the story before you jump into Coverage, Signal, or Resolution.' },
+      { role: 'assistant', text: `${storyGuide.scenario.label} is active. ${storyGuide.headline}` },
+      { role: 'assistant', text: `Recommended next screen: ${storyGuide.nextStep?.moduleLabel || 'Coverage Agent'}.` },
     ],
     coverage: [
       { role: 'assistant', text: `Coverage Agent is tracking ${openCoverage} open monitoring gaps in the ${findScenario(state.scenarioId).label} scenario.` },
@@ -310,7 +323,6 @@ function reducerLikeApply(state, action) {
     const replacement = createInitialDemoState(action.scenarioId)
     return {
       ...replacement,
-      currentModule: state.currentModule,
       viewMode: state.viewMode,
       deploymentScale: state.deploymentScale,
       servers: state.servers,
@@ -630,6 +642,79 @@ function buildSignalView(state, scale) {
   }
 }
 
+function buildStoryGuide(state, scale) {
+  const scenarioGuides = {
+    'incident-response': {
+      eyebrow: 'Incident Narrative',
+      headline: 'Show how NEO turns a live SQL incident into an approved operational fix.',
+      summary: 'This is the clearest end-to-end story because each screen answers the next question: what broke, why it happened, what was missing, who approves the action, and what the payoff looks like.',
+      presenterNote: 'Use this when the audience needs diagnosis, governance, and measurable value in one connected workflow.',
+      outcome: 'NEO compresses the path from incident evidence to approved remediation without hiding the operator.',
+      steps: [
+        { module: 'overview', title: 'Frame the operating model', proof: 'NEO is an operating layer, not a disconnected AI widget.' },
+        { module: 'resolution', title: 'Start with the broken moment', proof: 'A live incident gives the rest of the story urgency and context.' },
+        { module: 'coverage', title: 'Explain the missing early warning', proof: 'The SQL estate was not fully instrumented, so the team saw symptoms late.' },
+        { module: 'approvals', title: 'Keep human control visible', proof: 'The operator approves the remediation instead of AI acting on its own.' },
+        { module: 'impact', title: 'Land on measurable outcome', proof: 'MTTR, hours saved, and audit history all update from the same action.' },
+        { module: 'dataflow', title: 'Close on trust and architecture', proof: 'Privacy, routing, and deployment choice remain intact.' },
+      ],
+    },
+    'coverage-review': {
+      eyebrow: 'Prevention Narrative',
+      headline: 'Show how NEO prevents avoidable outages by finding blind spots before they become incidents.',
+      summary: 'This story works when you want to lead with prevention. Start with the device tree, show what is missing, explain why those gaps matter, then route the recommendations through approval and impact.',
+      presenterNote: 'Use this when the buyer cares about monitoring maturity, standardization, and lowering hidden operational risk.',
+      outcome: 'NEO expands monitoring coverage with evidence-backed recommendations and governance built in.',
+      steps: [
+        { module: 'overview', title: 'Frame the business problem', proof: 'The issue is not dashboard usability. It is blind spots across a growing fleet.' },
+        { module: 'coverage', title: 'Show the gaps in context', proof: 'Coverage Agent ties each recommendation to incidents, fleet patterns, or behavioral anomalies.' },
+        { module: 'signal', title: 'Show why better coverage needs better signal', proof: 'Adding sensors only helps when thresholds adapt to real behavior.' },
+        { module: 'approvals', title: 'Route rollout through governance', proof: 'Operators decide which recommendations get deployed and when.' },
+        { module: 'impact', title: 'Translate prevention into capacity', proof: 'Closed gaps and lower alert waste become a measurable operations story.' },
+        { module: 'dataflow', title: 'Answer deployment objections', proof: 'The operating model still works with Paessler AI or a local LLM.' },
+      ],
+    },
+    'noise-reduction': {
+      eyebrow: 'Efficiency Narrative',
+      headline: 'Show how NEO reduces alert fatigue without making the monitoring team less safe.',
+      summary: 'This story is strongest when the audience already feels the pain of noisy monitoring. Start with the before and after view, make the approval visible, then connect the reduced noise to capacity and operator focus.',
+      presenterNote: 'Use this when the audience is overloaded by false positives and needs a fast, quantitative demo.',
+      outcome: 'NEO removes noisy alerts while preserving operator control and making the payoff easy to quantify.',
+      steps: [
+        { module: 'overview', title: 'Set up the operating problem', proof: 'Alert fatigue is a staffing and response issue, not just a threshold issue.' },
+        { module: 'signal', title: 'Show the before and after', proof: 'Dynamic baselines cut noise sharply in the highest-churn sensor group.' },
+        { module: 'approvals', title: 'Show the control point', proof: 'Threshold changes still move through an approval workflow.' },
+        { module: 'impact', title: 'Convert noise reduction into ROI', proof: 'The alert drop translates into reclaimed hours and better focus.' },
+        { module: 'coverage', title: 'Reinvest the saved attention', proof: 'With less noise, the team can act on genuine monitoring gaps.' },
+        { module: 'dataflow', title: 'Finish on trust and fit', proof: 'The same tuning model works with local or Paessler-managed inference.' },
+      ],
+    },
+  }
+
+  const config = scenarioGuides[state.scenarioId] || scenarioGuides['incident-response']
+  const steps = config.steps.map((step, index) => ({
+    ...step,
+    index: index + 1,
+    moduleLabel: storyModuleLabels[step.module] || step.title,
+    active: state.currentModule === step.module,
+  }))
+  const currentStepIndex = steps.findIndex((step) => step.module === state.currentModule)
+
+  return {
+    ...config,
+    scenario: findScenario(state.scenarioId),
+    scaleLabel: scale.label,
+    steps,
+    currentStepIndex,
+    currentStep: currentStepIndex >= 0 ? steps[currentStepIndex] : null,
+    nextStep: currentStepIndex >= 0 ? steps[currentStepIndex + 1] || null : steps[0],
+    alternatives: demoScenarioOptions.map((scenario) => ({
+      ...scenario,
+      active: scenario.id === state.scenarioId,
+    })),
+  }
+}
+
 function createChatResponse(state, module, text) {
   const normalized = text.trim().toLowerCase()
   const currentIncident = buildIncident(state)
@@ -714,6 +799,7 @@ export function DemoProvider({ children }) {
       scenario: findScenario(state.scenarioId),
       scale,
       impact,
+      storyGuide: buildStoryGuide(state, scale),
       weeklyData: buildWeeklyData(state),
       deviceTree: buildDeviceTree(state),
       coverageCards: buildCoverageCards(state),

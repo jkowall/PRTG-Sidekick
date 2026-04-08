@@ -2,7 +2,7 @@ import { Shield, Activity, AlertTriangle, MessageSquare, BarChart3, CheckCircle2
 import { useDemo } from '../demoContext'
 
 const introItems = [
-  { id: 'overview', label: 'What is NEO?' },
+  { id: 'overview', label: 'Start Here' },
 ]
 
 const agentItems = [

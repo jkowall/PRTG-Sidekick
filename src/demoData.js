@@ -2,17 +2,20 @@ export const demoScenarioOptions = [
   {
     id: 'incident-response',
     label: 'SQL Incident',
-    description: 'Shows NEO handling an active database incident with approvals and evidence.',
+    description: 'Best end-to-end narrative: start with an outage, show the evidence, approve the fix, then land on measurable impact.',
+    bestFor: 'Root cause to approved action',
   },
   {
     id: 'coverage-review',
     label: 'Coverage Review',
-    description: 'Focuses on missing sensor recommendations and approval-driven rollout.',
+    description: 'Best prevention story: show the blind spots first, explain why they matter, then queue coverage improvements with governance intact.',
+    bestFor: 'Preventing the next outage',
   },
   {
     id: 'noise-reduction',
     label: 'Noise Reduction',
-    description: 'Highlights Signal Agent threshold tuning and impact on alert fatigue.',
+    description: 'Best operations-efficiency story: show alert fatigue, apply dynamic baselines, and prove how much noise disappears.',
+    bestFor: 'Alert fatigue and capacity reclaim',
   },
 ]
 
@@ -526,7 +529,7 @@ function buildCoverageStatuses(scenarioId) {
 
 export function createInitialDemoState(scenarioId = 'incident-response') {
   return {
-    currentModule: 'coverage',
+    currentModule: 'overview',
     scenarioId,
     viewMode: 'operator',
     deploymentScale: 'regional',
