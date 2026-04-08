@@ -56,9 +56,29 @@ function createCoverageAction(recommendationId) {
   return recommendation ? createActionFromTemplate(buildCoverageApprovalTemplate(recommendation)) : null
 }
 
+function formatInjectionTimestamp() {
+  return new Date().toLocaleTimeString([], {
+    hour: 'numeric',
+    minute: '2-digit',
+  })
+}
+
+function buildIncident(state) {
+  const isInjected = (state.incidentInjectionCount || 0) > 0
+
+  return {
+    ...incident,
+    id: isInjected ? `INC-2026-${String(4100 + state.incidentInjectionCount).padStart(4, '0')}` : incident.id,
+    started: state.incidentStartedLabel || incident.started,
+    duration: state.incidentResolved ? '5 min' : (state.incidentDurationLabel || incident.duration),
+    summary: isInjected ? `Live demo incident injected from presenter controls. ${incident.summary}` : incident.summary,
+  }
+}
+
 function buildChatSeeds(state, activeModule, scale) {
   const openCoverage = Object.values(state.coverageStatuses).filter((status) => status === 'open').length
   const pendingApprovals = state.approvalsPending.length
+  const currentIncident = buildIncident(state)
 
   const base = {
     coverage: [
@@ -70,7 +90,7 @@ function buildChatSeeds(state, activeModule, scale) {
       { role: 'assistant', text: state.thresholdsApplied ? 'AI thresholds are currently applied. Switch to the static view to show the before state.' : 'A tuning plan is ready to submit into the approval workflow.' },
     ],
     resolution: [
-      { role: 'assistant', text: state.incidentActive ? `Resolution Agent is working incident ${incident.id} on ${incident.affectedDevice}.` : 'Resolution Agent is idle until you inject an incident from the presenter controls.' },
+      { role: 'assistant', text: state.incidentActive ? `Resolution Agent is working incident ${currentIncident.id} on ${currentIncident.affectedDevice}.` : 'Resolution Agent is idle until you inject an incident from the presenter controls.' },
       { role: 'assistant', text: state.incidentResolved ? 'The backup action has already been approved and the incident is marked resolved.' : 'Ask for the leading hypothesis or queue the remediation action directly.' },
     ],
     nlquery: [
@@ -178,6 +198,8 @@ function reducerLikeApply(state, action) {
       return state
     }
 
+    const currentIncident = buildIncident(state)
+
     return appendEvent(
       {
         ...state,
@@ -185,7 +207,7 @@ function reducerLikeApply(state, action) {
         approvalsPending: [...state.approvalsPending, createActionFromTemplate(pendingApprovalTemplates.resolution)],
       },
       'resolution',
-      `Queued remediation for ${incident.id}: pause the backup job on ${incident.affectedDevice}.`,
+      `Queued remediation for ${currentIncident.id}: pause the backup job on ${currentIncident.affectedDevice}.`,
     )
   }
 
@@ -232,14 +254,16 @@ function reducerLikeApply(state, action) {
     }
 
     if (target.sourceType === 'resolution') {
+      const currentIncident = buildIncident(next)
       next = appendEvent(
         {
           ...next,
           incidentActive: true,
           incidentResolved: true,
+          incidentFresh: false,
         },
         'resolution',
-        `Approved the backup pause action. ${incident.id} is now marked resolved in the demo state.`,
+        `Approved the backup pause action. ${currentIncident.id} is now marked resolved in the demo state.`,
       )
     }
 
@@ -406,20 +430,26 @@ function reducerLikeApply(state, action) {
   }
 
   if (action.type === 'injectIncident') {
-    let next = {
+    const incidentInjectionCount = (state.incidentInjectionCount || 0) + 1
+    const incidentStartedLabel = `${formatInjectionTimestamp()} local`
+    const resolutionAction = createActionFromTemplate(pendingApprovalTemplates.resolution, 'Now')
+    const next = {
       ...state,
+      currentModule: 'resolution',
       incidentActive: true,
       incidentResolved: false,
+      incidentFresh: true,
+      incidentInjectionCount,
+      incidentStartedLabel,
+      incidentDurationLabel: 'Just started',
+      approvalsPending: [
+        resolutionAction,
+        ...state.approvalsPending.filter((item) => item.sourceType !== 'resolution'),
+      ],
     }
+    const currentIncident = buildIncident(next)
 
-    if (!state.approvalsPending.some((item) => item.sourceType === 'resolution')) {
-      next = {
-        ...next,
-        approvalsPending: [...next.approvalsPending, createActionFromTemplate(pendingApprovalTemplates.resolution, 'Now')],
-      }
-    }
-
-    return appendEvent(next, 'resolution', `Injected ${incident.id} into the current scenario.`)
+    return appendEvent(next, 'resolution', `Injected ${currentIncident.id} and opened Resolution Agent.`)
   }
 
   if (action.type === 'recordEvent') {
@@ -598,6 +628,7 @@ function buildSignalView(state, scale) {
 
 function createChatResponse(state, module, text) {
   const normalized = text.trim().toLowerCase()
+  const currentIncident = buildIncident(state)
 
   if (!normalized) {
     return 'Ask a question or use the suggested actions in the active module.'
@@ -628,7 +659,7 @@ function createChatResponse(state, module, text) {
     if (normalized.includes('fix') || normalized.includes('resolve')) {
       return state.incidentResolved ? 'The remediation action has already been approved and the incident is marked resolved.' : 'Queue or approve the backup pause action to complete the resolution flow.'
     }
-    return state.incidentActive ? `Resolution Agent is tracking ${incident.id} on ${incident.affectedDevice}.` : 'There is no active incident. Use Inject Incident to start one.'
+    return state.incidentActive ? `Resolution Agent is tracking ${currentIncident.id} on ${currentIncident.affectedDevice}.` : 'There is no active incident. Use Inject Incident to start one.'
   }
 
   if (module === 'nlquery') {
@@ -691,7 +722,7 @@ export function DemoProvider({ children }) {
         capacityData,
         comparisonMetrics,
         hypotheses,
-        incident,
+        incident: buildIncident(state),
         insightTags,
         llmProviders,
         manualSteps,

@@ -24,6 +24,7 @@ export default function ResolutionAgent() {
   const [expanded, setExpanded] = useState({ 1: true })
   const isExecutive = state.viewMode === 'executive'
   const hasPendingResolution = state.approvalsPending.some((item) => item.sourceType === 'resolution')
+  const currentIncident = data.incident
 
   const handleInsightLink = (linkLabel) => {
     if (linkLabel.includes('Coverage')) {
@@ -71,6 +72,19 @@ export default function ResolutionAgent() {
         </button>
       </div>
 
+      {state.incidentFresh && !state.incidentResolved && (
+        <div className="mb-5 rounded-[10px] border border-sp-warning/30 bg-sp-warning-bg p-4">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="rounded-[4px] bg-sp-warning px-1.5 py-0.5 text-[10px] font-bold text-white">Live Demo Incident</span>
+            <span className="text-[13px] font-medium text-sp-text-brand">{currentIncident.id}</span>
+            <span className="text-[12px] text-sp-text-secondary">injected at {currentIncident.started}</span>
+          </div>
+          <p className="mt-2 text-[12px] leading-[17px] text-sp-text-base">
+            The presenter controls routed you here, reopened the incident flow, and moved the remediation approval back to the top of the queue.
+          </p>
+        </div>
+      )}
+
       <div className={`mb-5 rounded-[10px] border p-4 ${state.incidentResolved ? 'border-sp-up/30 bg-sp-up-bg' : 'border-sp-down/30 bg-sp-down-bg'}`}>
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-3">
@@ -79,13 +93,13 @@ export default function ResolutionAgent() {
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-[14px] font-medium text-sp-text-brand">{data.incident.id}</span>
+                <span className="text-[14px] font-medium text-sp-text-brand">{currentIncident.id}</span>
                 <span className={`rounded-[4px] px-1.5 py-0.5 text-[10px] font-bold ${state.incidentResolved ? 'bg-sp-up text-white' : 'bg-sp-down text-white'}`}>
-                  {state.incidentResolved ? 'Resolved' : data.incident.severity}
+                  {state.incidentResolved ? 'Resolved' : currentIncident.severity}
                 </span>
               </div>
               <div className="mt-0.5 text-[12px] text-sp-text-secondary">
-                {data.incident.affectedDevice} ({data.incident.ip}) - Started {data.incident.started}
+                {currentIncident.affectedDevice} ({currentIncident.ip}) - Started {currentIncident.started}
               </div>
             </div>
           </div>
@@ -94,12 +108,12 @@ export default function ResolutionAgent() {
             <div>
               <div className={`flex items-center gap-1 ${state.incidentResolved ? 'text-sp-up' : 'text-sp-down'}`}>
                 <Clock size={12} />
-                <span className="text-[14px] font-bold">{state.incidentResolved ? '5 min' : data.incident.duration}</span>
+                <span className="text-[14px] font-bold">{currentIncident.duration}</span>
               </div>
               <div className="text-[10px] text-sp-text-tertiary">Resolution Window</div>
             </div>
             <div>
-              <div className={`text-[14px] font-bold ${state.incidentResolved ? 'text-sp-up' : 'text-sp-down'}`}>{data.incident.downSensors.length}</div>
+              <div className={`text-[14px] font-bold ${state.incidentResolved ? 'text-sp-up' : 'text-sp-down'}`}>{currentIncident.downSensors.length}</div>
               <div className="text-[10px] text-sp-text-tertiary">Affected Sensors</div>
             </div>
           </div>
@@ -118,7 +132,7 @@ export default function ResolutionAgent() {
             <div className="rounded-[12px] border border-sp-border-subtle bg-sp-bg-raised p-4">
               <h2 className="mb-3 text-[14px] font-medium text-sp-text-brand">Affected Sensors</h2>
               <div className="space-y-2">
-                {data.incident.downSensors.map((sensor) => {
+                {currentIncident.downSensors.map((sensor) => {
                   const isDown = sensor.status === 'Down'
                   return (
                     <div key={sensor.name} className={`rounded-[8px] border p-3 ${isDown ? 'border-sp-down/30 bg-sp-down-bg' : 'border-sp-warning/30 bg-sp-warning-bg'}`}>
