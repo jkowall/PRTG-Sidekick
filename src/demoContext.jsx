@@ -81,6 +81,10 @@ function buildChatSeeds(state, activeModule, scale) {
   const currentIncident = buildIncident(state)
 
   const base = {
+    overview: [
+      { role: 'assistant', text: 'NEO is the approval-driven AI operating layer behind the Sidekick demo.' },
+      { role: 'assistant', text: 'Use this page to frame the story before you jump into Coverage, Signal, or Resolution.' },
+    ],
     coverage: [
       { role: 'assistant', text: `Coverage Agent is tracking ${openCoverage} open monitoring gaps in the ${findScenario(state.scenarioId).label} scenario.` },
       { role: 'assistant', text: 'Queue any recommendation for approval and the rest of the demo will update automatically.' },
@@ -643,6 +647,10 @@ function createChatResponse(state, module, text) {
       return `Queue ${nextRecommendation.sensor} on ${nextRecommendation.device} from the Coverage view.`
     }
     return `Coverage Agent currently has ${Object.values(state.coverageStatuses).filter((status) => status === 'open').length} open gaps and ${state.approvalsPending.filter((item) => item.sourceType === 'coverage').length} queued actions.`
+  }
+
+  if (module === 'overview') {
+    return 'NEO combines specialized monitoring agents with approvals, evidence, privacy controls, and impact tracking to create one coherent operating story.'
   }
 
   if (module === 'signal') {

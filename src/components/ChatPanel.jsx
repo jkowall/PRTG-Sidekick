@@ -3,6 +3,7 @@ import { Bot, Send, Sparkles, User } from 'lucide-react'
 import { useDemo } from '../demoContext'
 
 const moduleLabels = {
+  overview: 'NEO Overview',
   coverage: 'Coverage Agent',
   signal: 'Signal Agent',
   resolution: 'Resolution Agent',

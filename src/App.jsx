@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 import Sidebar from './components/Sidebar'
+import NeoOverview from './components/NeoOverview'
 import CoverageAgent from './components/CoverageAgent'
 import SignalAgent from './components/SignalAgent'
 import ResolutionAgent from './components/ResolutionAgent'
@@ -15,6 +16,7 @@ import DemoControlBar from './components/DemoControlBar'
 import { useDemo } from './demoContext'
 
 const moduleLabels = {
+  overview: 'NEO Overview',
   coverage: 'Coverage Agent',
   signal: 'Signal Agent',
   resolution: 'Resolution Agent',
@@ -44,6 +46,7 @@ function App() {
   const toggleTheme = () => setTheme(t => t === 'dark' ? 'light' : 'dark')
 
   const modules = {
+    overview: NeoOverview,
     coverage: CoverageAgent,
     signal: SignalAgent,
     resolution: ResolutionAgent,
