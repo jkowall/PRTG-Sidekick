@@ -8,6 +8,7 @@ export default function DemoControlBar() {
   const [pinnedOpen, setPinnedOpen] = useState(false)
   const [hovered, setHovered] = useState(false)
   const latestEvent = state.recentEvents[0]
+  const storyGuide = derived.storyGuide
   const isOpen = pinnedOpen || hovered
 
   const summaryText = useMemo(
@@ -139,8 +140,50 @@ export default function DemoControlBar() {
               </label>
             </div>
 
-            <div className="mt-3 text-[10px] text-sp-text-secondary">
-              {derived.scale.instances} instances, {derived.scale.sensors.toLocaleString()} sensors, route {derived.dataFlowSummary.providerLabel}.
+            <div className="mt-3 grid gap-3 lg:grid-cols-[1.2fr,1.8fr]">
+              <div className="rounded-[10px] border border-sp-border-subtle/60 bg-sp-bg-surface px-3 py-3">
+                <div className="text-[10px] font-bold uppercase tracking-[0.06em] text-sp-text-tertiary">{storyGuide.eyebrow}</div>
+                <div className="mt-1 text-[13px] font-medium text-sp-text-base">{storyGuide.scenario.label}</div>
+                <p className="mt-1 text-[11px] leading-[17px] text-sp-text-secondary">
+                  {storyGuide.summary}
+                </p>
+                <div className="mt-2 rounded-[8px] border border-sp-border-subtle/50 bg-sp-bg-raised px-2.5 py-2 text-[11px] leading-[16px] text-sp-text-base">
+                  {storyGuide.outcome}
+                </div>
+              </div>
+
+              <div className="rounded-[10px] border border-sp-border-subtle/60 bg-sp-bg-surface px-3 py-3">
+                <div className="flex items-center justify-between gap-2">
+                  <div>
+                    <div className="text-[10px] font-bold uppercase tracking-[0.06em] text-sp-text-tertiary">Recommended Screen Flow</div>
+                    <div className="mt-1 text-[11px] text-sp-text-secondary">{storyGuide.presenterNote}</div>
+                  </div>
+                  <div className="text-right text-[10px] text-sp-text-tertiary">
+                    {derived.scale.instances} instances
+                    <br />
+                    {derived.scale.sensors.toLocaleString()} sensors
+                  </div>
+                </div>
+
+                <div className="mt-3 grid gap-2 md:grid-cols-2 xl:grid-cols-3">
+                  {storyGuide.steps.map((step) => (
+                    <button
+                      key={step.module}
+                      type="button"
+                      onClick={() => actions.setCurrentModule(step.module)}
+                      className={`cursor-pointer rounded-[8px] border px-3 py-2 text-left transition-colors ${
+                        step.active
+                          ? 'border-sp-accent/30 bg-sp-accent-soft'
+                          : 'border-sp-border-subtle bg-sp-bg-raised hover:border-sp-border-strong'
+                      }`}
+                    >
+                      <div className="text-[10px] font-bold uppercase tracking-[0.06em] text-sp-text-tertiary">Step {step.index}</div>
+                      <div className="mt-1 text-[12px] font-medium text-sp-text-base">{step.moduleLabel}</div>
+                      <p className="mt-1 text-[11px] leading-[16px] text-sp-text-secondary">{step.proof}</p>
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         )}

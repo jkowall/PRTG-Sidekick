@@ -1,4 +1,5 @@
 import { Activity, AlertTriangle, ArrowRight, BarChart3, CheckCircle2, Lock, MessageSquare, Shield, Sparkles } from 'lucide-react'
+import { useDemo } from '../demoContext'
 
 const outcomes = [
   {
@@ -22,7 +23,7 @@ const valueAreas = [
   {
     icon: Shield,
     title: 'Coverage',
-    summary: 'Expands monitoring coverage by identifying blind spots before they become outages.',
+    summary: 'Find the blind spots that make outages harder to prevent.',
     outcome: 'Lower monitoring risk and fewer avoidable surprises.',
     color: 'text-sp-up',
     bg: 'bg-sp-up-bg',
@@ -30,7 +31,7 @@ const valueAreas = [
   {
     icon: Activity,
     title: 'Signal Quality',
-    summary: 'Reduces alert fatigue by tuning thresholds around real behavior instead of static guesswork.',
+    summary: 'Reduce alert fatigue with thresholds based on real behavior.',
     outcome: 'Higher operator focus and better response efficiency.',
     color: 'text-sp-accent',
     bg: 'bg-sp-accent-soft',
@@ -38,7 +39,7 @@ const valueAreas = [
   {
     icon: AlertTriangle,
     title: 'Resolution',
-    summary: 'Compresses incident response by ranking likely root causes and guiding the next operational action.',
+    summary: 'Move from symptoms to ranked root cause hypotheses and next actions.',
     outcome: 'Lower mean time to resolution and more consistent incident handling.',
     color: 'text-sp-down',
     bg: 'bg-sp-down-bg',
@@ -46,54 +47,102 @@ const valueAreas = [
   {
     icon: MessageSquare,
     title: 'Access to Insight',
-    summary: 'Lets teams ask direct operational questions in plain English across distributed monitoring environments.',
-    outcome: 'Faster executive visibility and quicker answers without specialist query work.',
+    summary: 'Give operators and leaders direct answers in plain English.',
+    outcome: 'Faster visibility without specialist query work.',
     color: 'text-sp-accent-secondary',
     bg: 'bg-sp-bg-surface',
   },
 ]
 
-const executiveStory = [
-  { icon: Shield, label: 'Start with the operating problem', text: 'Frame the challenge as scale, noise, and response speed rather than as a collection of UI features.' },
-  { icon: CheckCircle2, label: 'Show control, not automation theater', text: 'Use the Approval Queue to demonstrate that NEO accelerates decisions without removing accountability.' },
-  { icon: BarChart3, label: 'Land on measurable impact', text: 'Close with Impact Dashboard to connect the story to reclaimed capacity, reduced alert load, and faster resolution.' },
-  { icon: Lock, label: 'Address trust and deployment fit', text: 'Use Data Flow to answer the security, privacy, and model-routing questions that matter to enterprise buyers.' },
-]
+const narrativePrompts = {
+  'incident-response': [
+    'Start with the outage so every later screen feels necessary instead of optional.',
+    'Use Coverage to explain why the team lacked early warning, then use Approvals to show that AI recommendations still stop at a human checkpoint.',
+    'Finish on Impact so the audience leaves with MTTR reduction and operational leverage, not just a root-cause screenshot.',
+  ],
+  'coverage-review': [
+    'Start with blind spots in the device tree, not with generic AI framing.',
+    'Use Signal as supporting context: more coverage only helps if the team can trust the alerts that come with it.',
+    'Finish on Impact to translate better instrumentation into risk reduction and reclaimed team capacity.',
+  ],
+  'noise-reduction': [
+    'Start with the before and after so the pain is obvious immediately.',
+    'Use Approvals to make clear that threshold tuning is governed, not automatic.',
+    'Finish on Coverage or Impact to show where the saved attention goes once the noise is gone.',
+  ],
+}
 
-const talkingPoints = [
-  '“NEO is an operating layer for monitoring teams, not just an AI assistant embedded in a dashboard.”',
-  '“The value is not only better insight. The value is faster action with governance, evidence, and measurable operating impact.”',
-  '“This creates leverage for understaffed IT teams without forcing them to trade off privacy, approval control, or deployment flexibility.”',
-]
+const moduleIcons = {
+  overview: Sparkles,
+  coverage: Shield,
+  signal: Activity,
+  resolution: AlertTriangle,
+  approvals: CheckCircle2,
+  impact: BarChart3,
+  dataflow: Lock,
+}
 
 export default function NeoOverview() {
+  const { derived, actions } = useDemo()
+  const storyGuide = derived.storyGuide
+  const prompts = narrativePrompts[storyGuide.scenario.id] || narrativePrompts['incident-response']
+
   return (
     <div>
       <div className="mb-6 rounded-[16px] border border-sp-border-subtle bg-[linear-gradient(135deg,rgba(227,40,98,0.14),rgba(15,103,255,0.10),rgba(255,255,255,0))] p-6">
-        <div className="flex flex-wrap items-start justify-between gap-5">
-          <div className="max-w-[760px]">
+        <div className="flex flex-col items-start gap-5 lg:flex-row lg:items-start lg:justify-between">
+          <div className="min-w-0 flex-1 max-w-[760px]">
             <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.08em] text-sp-accent">
               <Sparkles size={12} />
-              Executive Overview
+              Start Here
             </div>
             <div className="mt-2 inline-flex rounded-full border border-sp-border-subtle bg-sp-bg-raised px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.06em] text-sp-text-secondary">
-              Executive-level overview
+              {storyGuide.eyebrow}
             </div>
             <h1 className="mt-2 text-[28px] font-medium leading-[32px] text-sp-text-brand">
-              NEO helps IT teams operate more efficiently without giving up control.
+              {storyGuide.headline}
             </h1>
             <p className="mt-3 max-w-[700px] text-[14px] leading-[22px] text-sp-text-base">
-              PRTG Sidekick uses specialized AI agents to improve monitoring coverage, reduce alert noise, accelerate incident response, and expose network insight in plain English, all within an approval-driven and privacy-conscious operating model.
+              {storyGuide.summary}
             </p>
             <p className="mt-2 max-w-[640px] text-[12px] leading-[18px] text-sp-text-secondary">
-              This page is intended as an executive-level overview of what NEO is, why it matters, and how the platform creates operational and business value.
+              Active scenario: <strong>{storyGuide.scenario.label}</strong> across <strong>{storyGuide.scaleLabel}</strong>.
             </p>
           </div>
 
-          <div className="rounded-[12px] border border-sp-border-subtle bg-sp-bg-raised px-4 py-3">
-            <div className="text-[10px] font-bold uppercase tracking-[0.06em] text-sp-text-tertiary">Executive framing</div>
-            <div className="mt-2 max-w-[280px] text-[13px] leading-[19px] text-sp-text-base">
-              The story is simple: fewer blind spots, less noise, faster recovery, and clearer ROI from the monitoring stack already in place.
+          <div className="flex w-full flex-col gap-4 lg:w-[320px] lg:shrink-0">
+            <div className="rounded-[12px] border border-sp-border-subtle bg-sp-bg-raised px-4 py-3">
+              <div className="text-[10px] font-bold uppercase tracking-[0.06em] text-sp-text-tertiary">Narrative Outcome</div>
+              <div className="mt-2 text-[13px] leading-[19px] text-sp-text-base">
+                {storyGuide.outcome}
+              </div>
+              {storyGuide.nextStep && (
+                <button
+                  type="button"
+                  onClick={() => actions.setCurrentModule(storyGuide.nextStep.module)}
+                  className="mt-3 flex cursor-pointer items-center gap-1.5 rounded-[8px] border border-sp-accent/20 bg-sp-accent-soft px-3 py-2 text-[12px] font-medium text-sp-accent transition-colors hover:border-sp-accent/40"
+                >
+                  Open {storyGuide.nextStep.moduleLabel}
+                  <ArrowRight size={13} />
+                </button>
+              )}
+            </div>
+
+            <div className="rounded-[12px] border border-sp-border-subtle bg-sp-bg-raised px-4 py-3">
+              <div className="text-[10px] font-bold uppercase tracking-[0.06em] text-sp-text-tertiary">Run The Demo</div>
+              <p className="mt-2 text-[12px] leading-[18px] text-sp-text-secondary">
+                Use the floating <strong>Presenter Console</strong> to change the scenario, move through the screen sequence, and trigger live actions without returning to this page.
+              </p>
+              {storyGuide.nextStep && (
+                <button
+                  type="button"
+                  onClick={() => actions.setCurrentModule(storyGuide.nextStep.module)}
+                  className="mt-3 flex cursor-pointer items-center gap-1.5 rounded-[8px] border border-sp-border-subtle bg-sp-bg-surface px-3 py-2 text-[12px] font-medium text-sp-text-base transition-colors hover:border-sp-border-strong"
+                >
+                  Go to {storyGuide.nextStep.moduleLabel}
+                  <ArrowRight size={13} className="text-sp-accent" />
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -111,9 +160,47 @@ export default function NeoOverview() {
       <div className="grid gap-5 xl:grid-cols-5">
         <div className="space-y-4 xl:col-span-3">
           <div>
-            <h2 className="text-[14px] font-medium text-sp-text-brand">Business Value Areas</h2>
+            <h2 className="text-[14px] font-medium text-sp-text-brand">Recommended Demo Flow</h2>
             <p className="mt-1 text-[12px] text-sp-text-secondary">
-              NEO is best understood as a set of operational outcomes rather than a set of isolated features.
+              The scenario is only clear when it is tied to the screens that prove it. Use this sequence as the main narrative spine.
+            </p>
+          </div>
+
+          <div className="space-y-3">
+            {storyGuide.steps.map((step) => {
+              const Icon = moduleIcons[step.module] || Sparkles
+
+              return (
+                <button
+                  key={step.module}
+                  type="button"
+                  onClick={() => actions.setCurrentModule(step.module)}
+                  className={`flex w-full cursor-pointer gap-3 rounded-[12px] border p-4 text-left transition-colors ${
+                    step.active
+                      ? 'border-sp-accent/30 bg-sp-accent-soft'
+                      : 'border-sp-border-subtle bg-sp-bg-raised hover:border-sp-border-strong'
+                  }`}
+                >
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[10px] bg-sp-bg-surface">
+                    <Icon size={17} className="text-sp-accent" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="text-[10px] font-bold uppercase tracking-[0.06em] text-sp-text-tertiary">Step {step.index}</span>
+                      <span className="text-[13px] font-medium text-sp-text-brand">{step.moduleLabel}</span>
+                    </div>
+                    <div className="mt-1 text-[12px] font-medium text-sp-text-base">{step.title}</div>
+                    <p className="mt-1 text-[12px] leading-[18px] text-sp-text-secondary">{step.proof}</p>
+                  </div>
+                </button>
+              )
+            })}
+          </div>
+
+          <div>
+            <h2 className="text-[14px] font-medium text-sp-text-brand">What The Platform Proves</h2>
+            <p className="mt-1 text-[12px] text-sp-text-secondary">
+              These themes stay constant even when you switch scenarios.
             </p>
           </div>
 
@@ -137,29 +224,9 @@ export default function NeoOverview() {
 
         <div className="space-y-4 xl:col-span-2">
           <div className="rounded-[12px] border border-sp-border-subtle bg-sp-bg-raised p-4">
-            <h2 className="text-[14px] font-medium text-sp-text-brand">Suggested Executive Story</h2>
-            <div className="mt-4 space-y-3">
-              {executiveStory.map((step, index) => (
-                <div key={step.label} className="flex gap-3">
-                  <div className="flex flex-col items-center">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-sp-bg-surface">
-                      <step.icon size={14} className="text-sp-accent" />
-                    </div>
-                    {index < executiveStory.length - 1 && <div className="mt-2 h-8 w-px bg-sp-border-subtle" />}
-                  </div>
-                  <div className="pb-2">
-                    <div className="text-[12px] font-medium text-sp-text-brand">{step.label}</div>
-                    <p className="mt-1 text-[11px] leading-[17px] text-sp-text-secondary">{step.text}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="rounded-[12px] border border-sp-border-subtle bg-sp-bg-raised p-4">
-            <h2 className="text-[14px] font-medium text-sp-text-brand">Talk Track</h2>
+            <h2 className="text-[14px] font-medium text-sp-text-brand">Presenter Guidance</h2>
             <div className="mt-3 space-y-2">
-              {talkingPoints.map((prompt) => (
+              {prompts.map((prompt) => (
                 <div key={prompt} className="rounded-[8px] border border-sp-border-subtle/50 bg-sp-bg-surface p-3 text-[12px] leading-[18px] text-sp-text-base">
                   {prompt}
                 </div>
@@ -168,12 +235,36 @@ export default function NeoOverview() {
           </div>
 
           <div className="rounded-[12px] border border-sp-border-subtle bg-sp-bg-raised p-4">
+            <h2 className="text-[14px] font-medium text-sp-text-brand">Other Demo Stories</h2>
+            <div className="mt-3 space-y-3">
+              {storyGuide.alternatives.map((scenario) => (
+                <button
+                  key={scenario.id}
+                  type="button"
+                  onClick={() => actions.setScenario(scenario.id)}
+                  className={`w-full cursor-pointer rounded-[10px] border p-3 text-left transition-colors ${
+                    scenario.active
+                      ? 'border-sp-accent/30 bg-sp-accent-soft'
+                      : 'border-sp-border-subtle bg-sp-bg-surface hover:border-sp-border-strong'
+                  }`}
+                >
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="text-[13px] font-medium text-sp-text-brand">{scenario.label}</div>
+                    <span className="text-[10px] font-bold uppercase tracking-[0.06em] text-sp-text-tertiary">{scenario.bestFor}</span>
+                  </div>
+                  <p className="mt-1 text-[11px] leading-[17px] text-sp-text-secondary">{scenario.description}</p>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="rounded-[12px] border border-sp-border-subtle bg-sp-bg-raised p-4">
             <div className="flex items-center gap-2 text-[12px] font-medium text-sp-text-brand">
-              Use this page to frame the platform before you drop into a live workflow
+              Use this page to reset the audience before you enter a live module
               <ArrowRight size={13} className="text-sp-accent" />
             </div>
             <p className="mt-2 text-[11px] leading-[17px] text-sp-text-secondary">
-              The goal is to establish why NEO matters at the operating-model level, then use Coverage, Signal, Resolution, and Impact to prove the claim.
+              Scenario switching now works best as a narrative reset: choose the story first, then follow the recommended screen path rather than touring modules in a fixed order.
             </p>
           </div>
         </div>

@@ -12,11 +12,11 @@ import ResolutionTimeline from './components/ResolutionTimeline'
 import DataFlowDiagram from './components/DataFlowDiagram'
 import ChatPanel from './components/ChatPanel'
 import SettingsModal from './components/SettingsModal'
-import DemoControlBar from './components/DemoControlBar'
+import PresenterConsole from './components/PresenterConsole'
 import { useDemo } from './demoContext'
 
 const moduleLabels = {
-  overview: 'NEO Overview',
+  overview: 'Start Here',
   coverage: 'Coverage Agent',
   signal: 'Signal Agent',
   resolution: 'Resolution Agent',
@@ -87,13 +87,14 @@ function App() {
             ))}
           </select>
         </div>
-        <DemoControlBar />
         <div key={activeModule} className="module-enter">
           <ActiveComponent />
         </div>
       </main>
 
       <ChatPanel activeModule={activeModule} />
+
+      <PresenterConsole />
 
       <SettingsModal
         isOpen={settingsOpen}
