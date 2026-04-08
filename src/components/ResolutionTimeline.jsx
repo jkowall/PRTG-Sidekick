@@ -5,6 +5,7 @@ export default function ResolutionTimeline() {
   const { state, data } = useDemo()
   const manualDuration = '1h 30m'
   const neoDuration = state.incidentResolved ? '5 min' : 'Pending approval'
+  const currentIncident = data.incident
 
   return (
     <div>
@@ -26,12 +27,16 @@ export default function ResolutionTimeline() {
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-[14px] font-medium text-sp-text-brand">{data.incident.id}</span>
+                <span className="text-[14px] font-medium text-sp-text-brand">{currentIncident.id}</span>
                 <span className={`rounded-[4px] px-1.5 py-0.5 text-[10px] font-bold ${state.incidentResolved ? 'bg-sp-up text-white' : 'bg-sp-down text-white'}`}>
-                  {state.incidentResolved ? 'Resolved' : data.incident.severity}
+                  {state.incidentResolved ? 'Resolved' : currentIncident.severity}
                 </span>
+                {state.incidentFresh && !state.incidentResolved && (
+                  <span className="rounded-[4px] bg-sp-warning-bg px-1.5 py-0.5 text-[10px] font-bold text-sp-warning">Injected now</span>
+                )}
               </div>
-              <div className="text-[12px] text-sp-text-secondary">{data.incident.summary}</div>
+              <div className="text-[12px] text-sp-text-secondary">{currentIncident.summary}</div>
+              <div className="mt-1 text-[11px] text-sp-text-tertiary">Started {currentIncident.started}</div>
             </div>
           </div>
           <div className="ml-auto flex items-center gap-6">

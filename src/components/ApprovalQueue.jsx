@@ -90,12 +90,16 @@ export default function ApprovalQueue() {
                     <div className="flex items-center gap-2">
                       <span className={`rounded-[4px] px-1.5 py-0.5 text-[10px] font-bold ${data.priorityStyles[item.priority]}`}>{item.priority}</span>
                       <span className="text-[10px] text-sp-text-tertiary">{item.agent} Agent</span>
+                      {item.sourceType === 'resolution' && state.incidentFresh && !state.incidentResolved && (
+                        <span className="rounded-[4px] bg-sp-warning-bg px-1.5 py-0.5 text-[10px] font-bold text-sp-warning">New Incident</span>
+                      )}
                     </div>
                     <div className="mt-0.5 flex items-center gap-2 text-[13px] font-medium text-sp-text-brand">
                       <ActionIcon size={12} className="text-sp-text-secondary" />
                       {item.action}: {item.target}
                     </div>
                     <div className="mt-0.5 text-[11px] text-sp-text-secondary">on {item.device} - {item.impact}</div>
+                    <div className="mt-0.5 text-[10px] text-sp-text-tertiary">Requested {item.requestedAt}</div>
                   </div>
                   <ChevronRight size={14} className={`text-sp-text-tertiary transition-transform ${isExpanded ? 'rotate-90' : ''}`} />
                 </button>

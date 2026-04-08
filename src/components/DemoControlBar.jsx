@@ -44,7 +44,7 @@ export default function DemoControlBar() {
             className="flex cursor-pointer items-center gap-1.5 rounded-[8px] border border-sp-warning/30 bg-sp-warning-bg px-3 py-2 text-[12px] font-bold text-sp-warning transition-colors hover:border-sp-warning/50"
           >
             <Siren size={13} />
-            Incident
+            Inject New Incident
           </button>
           <button
             type="button"
